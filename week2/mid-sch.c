@@ -3,40 +3,38 @@
 
 unsigned int MS_GCD(unsigned int m,unsigned int n)
 {
-	unsigned int t;
+	unsigned int d=2;
 	int opcount=0;
 	double f=1;
 
-	if(m<n)
-		t=m;
-	else 
-		t=n;
+	if(m>n)
+	{
+		m=m+n;
+		n=m-n;
+		m=m-n;
 
-	for(int i=2;i<=m/2;i++)
+	}
+	while(m!=1)
 	{
 		opcount++;
-		if(m%i==0)
+		if(m%d==0)
 		{
-			if(isprime(i))
+			m=m/d;
+			if(n%d==0)
 			{
-				if(n%i==0)
-				{
-					f=f*i;
-				}
+				n=n/d;
+				f=f*d;
 			}
 		}
+		else
+			d++;
+	
 	}
 
-
-
-
+	printf("Operation count= %d\n",opcount);
 	return f;
 
-	
-	
-
 }
-
 int main()
 {
 	unsigned int m,n;
