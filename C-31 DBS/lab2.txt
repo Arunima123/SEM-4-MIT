@@ -1,0 +1,15 @@
+Create Table EMPLOYEE(
+EmpNo number(5) PRIMARY KEY,
+EmpName varchar(20) NOT NULL,
+Gender varchar(1) NOT NULL,
+CHECK(Gender IN 'M' OR Gender IN 'F'),
+Salary number(5) NOT NULL,
+Address varchar(40) NOT NULL,
+DNo number(5));
+
+Create Table DEPARTMENT(
+DeptNo number(5) PRIMARY KEY,
+DeptName varchar(20) UNIQUE,
+LOCATION varchar(20));
+
+alter table employee add foreign key(DNo) references Department(DeptNo);
