@@ -1,0 +1,40 @@
+1
+select course_id,count(id) from takes group by course_id;
+
+3
+select dept_name,count(course_id) from course group by dept_name;
+
+2
+with per_dept(dept_name,count) as (select dept_name,count(*) from takes join course on takes.course_id=course.course_id group by dept_name) select dept_name from per_dept where count>10;
+
+4
+ with avg_sal(dept,sal) as (select d.dept_name,avg(salary) from department d join instructor on d.dept_name=instructor.dept_name group by d.dept_name) select dept,sal from avg_sal where sal>42000;
+
+5
+select sec_id,count(*) from takes where semester like 'Spring' and year=2009 group by sec_id;
+
+6
+ select * from prereq order by course_id asc;
+
+7
+select * from instructor order by salary desc;
+
+8
+ select max(S) from ( select sum(salary) as S from instructor group by dept_name);
+
+9
+ select  S from ( select avg(salary) as S from instructor group by dept_name) where S>42000;
+
+10
+ select s1.sec_id from ( select sec_id,count(*) c from section where year=2010 and semester='Spring' group by sec_id) s1, (select sec_id,count(*) c from section where year='2010'and semester='Spring' group by sec_id) s2 where s1.c>s2.c;
+
+11
+
+
+12
+select dept_name, a from ( select dept_name, avg(salary) a, count(*) c from instructor group by dept_name) where a>50000 and c>5;
+
+13
+with max_budget(value) as (select max(budget) from department group by dept_name) select value from max_budget;
+
+
