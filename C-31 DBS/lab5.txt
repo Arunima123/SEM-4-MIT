@@ -1,0 +1,8 @@
+1 
+select bdate, address from employee where fname='John' and minit='B' and lname='Smith';
+
+select fname,minit,lname,address from employee e,department d where dname='Research' and e.ssn=d.mgr_ssn;   
+3
+select distinct salary from employee;
+2    
+select p.pnumber,p.dnum,e.lname,e.address,e.bdate from project p join department d on  p.dnum=d.dnumber join employee e on  e.ssn=d.mgr_ssn where p.plocation='Stafford'  ;                                                                                   
