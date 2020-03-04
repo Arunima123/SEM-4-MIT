@@ -1,0 +1,29 @@
+create table author(
+aid number(4) primary key,
+name varchar(10),
+country varchar(10));
+
+create table book(
+bid number(3) not null,
+title varchar(10),
+chapters varchar(10),
+aid number(4) ,
+foreign key(aid) references author(aid));
+
+1)
+select all title from book,author where author.aid=book.bid and country='India';
+2)
+with num(value) as (select count(distinct title) from book,author where book.aid=author.aid group by aid) select s1.name from author s1, author s2,num where s1.value>s2.value;
+
+insert into author values(1000,'Nanda','India');
+insert into author values(2000,'Gopal','USA');
+insert into author values(3000,'Bala','USA');
+insert into author values(4000,'Guru','India');
+insert into author values(5000,'Swamy','India');
+
+insert into book values(10,'Java',5,1000);
+insert into book values(40,'C++',3,2000);
+insert into book values(30,'RDBMS',5,2000);
+insert into book values(30,'RDBMS',2,3000);
+insert into book values(10,'Java',4,4000);
+insert into book values(40,'C++',3,4000);

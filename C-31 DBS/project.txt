@@ -1,0 +1,167 @@
+TABLES
+
+1)
+create table admin(
+admin_id number(5) primary key,
+admin_name varchar(20) not null,
+admin_password number(6) not null);
+
+2)
+create table login(
+login_id number(5) primary key,
+login_username varchar(20) not null,
+login_password number(6) not null,
+login_admin_id number(5),
+foreign key(login_admin_id) references admin(admin_id));
+
+3)
+create table userr(
+user_id number(5) primary key,
+user_name varchar(20) not null,
+user_email varchar(40),
+user_addresss varchar(50));
+
+4)
+create table staff(
+staff_id number(5) primary key,
+staff_name varchar(20) not null,
+staff_email varchar(40),
+staff_designation varchar(50) not null,
+staff_addresss varchar(50));
+
+5)
+create table user_mobile(
+user_id number(5),
+user_mobile number(10),
+foreign key(user_id) references userr(user_id));
+
+6)
+create table staff_mobile(
+staff_id number(5),
+staff_mobile number(10),
+foreign key(staff_id) references staff(staff_id));
+
+7)
+create table articles(
+article_id number(5) primary key,
+article_title varchar(20) not null,
+article_author_id number(5),
+article_pages number(5),
+article_year number(4),
+foreign key(article_author_id) references authors(author_id));
+
+8)
+create table authors(
+author_id number(5) primary key,
+author_name varchar(20) not null,
+author_email varchar(40),
+author_department varchar(50) not null,
+author_addresss varchar(50),
+author_institution_id number(5),
+foreign key(author_institution_id) references institution(institution_id));
+
+9)
+create table institution(
+institution_id number(5) primary key,
+institution_name varchar(50) not null,
+state varchar(20),
+city varchar(20),
+street varchar(20));
+
+10)
+create table journals(
+journal_id number(5) primary key,
+journal_title varchar(20) not null,
+journal_article_id number(5),
+journal_pages number(5),
+journal_year number(4),
+publisher varchar(20),
+foreign key(journal_article_id) references articles(article_id));
+
+11)
+create table feedback(
+user_id number(5),
+feedback_title varchar(20),
+feedback_description varchar(40));
+
+
+SIMPLE QUERIES
+1)
+List all journals published in year 1978
+
+select journal_title from journals where journal_year=1987;
+
+2)
+List all author names with length of their names
+
+select author_name,length(author_name) as length from authors;
+
+3)
+List the articles written by the author='xyz'
+
+select article_title from articles,authors where author_id=article_author_id and author_name='xyz';
+
+INTERMEDIATE QUERIES
+1)
+Find the names of the journals that have the highest average number of pages in a year
+
+select journal_title from journals where journal_pages>all(select avg(journal_pages) from journals group by journal_year);
+
+2)
+Find the authors who have written atleast 2 articles in the year 1990
+
+select author_name from authors where 2<=(select count(*) from articles where article_year=1990;
+
+3)
+Find all articles in year 1998 of pages more than 10 and in year 1990 of pages less than 8
+
+(select article_title from articles where article_year=1998 and article_pages>10) union (select article_title from articles where article_year=1990 and article_pages<8);
+
+COMPLEX QUERIES
+1)
+Find the number of articles in each journal
+
+select journal_title,count(article_id) from journals,articles where journal_article_id=article_id  group by journal_article_id;
+
+2)
+Find journals that have maximum number of articles in year=1990
+
+with num(value) as ( select count(*) from articles,journals where article_year=2000 and article_id=journal_article_id group by journal_article_id) select journal_title,max(value) from journals,num;
+
+3)
+Display the details of articles sorting the number of pages in decreasing order
+
+select * from articles order by article_pages desc;
+
+4)
+Increase pages of the journal by 2%  if pages are more than 500 else by 4%
+
+update journals set journal_pages= case when journal_pages >500 then journal_pages * 1.02 else journal_pages * 1.04;
+ 
+INSERT QUERIES 
+
+insert into institution values(987,'MIT','UP','Lucknow',23);
+insert into institution values(567,'VIT','UP','Kanpur',19);
+insert into institution values(431,'BITS','Delhi','abc',5);
+insert into institution values(216,'IIT','Mumbai','Thane',6);
+
+insert into authors values(123,'Arun','sunflower123@gmail.com','publicity','zzz',987);
+insert into authors values(234,'Riya','planet122@gmail.com','social media','yyy',567);
+insert into authors values(345,'Arun','rose123@gmail.com','HR','xxx',431);
+insert into authors values(456,'Simran','mars122@gmail.com','PR','www',216);
+
+insert into articles values(1122,'Tree',123,12,1990);
+insert into articles values(2211,'Ocean',234,6,1998);
+insert into articles values(3344,'Mountain',345,24,1990);
+insert into articles values(4433,'Sunlight',456,36,1998);
+
+insert into journals values(1111,'Forest',1122,1000,1987,'qqqq');
+insert into journals values(9999,'Water',2211,200,2000,'wwww');
+insert into journals values(2222,'Land',3344,1800,1987,'eeee');
+insert into journals values(6666,'Light',4433,800,2000,'rrrr');
+
+
+
+
+
+

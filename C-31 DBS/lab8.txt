@@ -1,0 +1,52 @@
+create table student_table(
+rollno number(5),
+gpa number(4,2));
+
+insert into student_table values(1,5.8);
+insert into student_table values(2,6.5);
+insert into student_table values(3,3.4);
+insert into student_table values(4,7.8);
+insert into student_table values(5,9.5);
+
+1)
+set serveroutput on
+declare
+	roll student_table.rollno%type;
+	gpa student_table.gpa%type;
+begin
+	roll := &rollnumber;
+	select gpa into gpa from student_table where rollno=roll;
+	dbms_output.put_line('gpa = '||gpa);
+end;
+/
+
+2)
+set serveroutput on
+declare
+	roll student_table.rollno%type;
+	gpa student_table.gpa%type;
+begin
+	roll := &rollnumber;
+	select gpa into gpa from student_table where rollno=roll;
+	if gpa>9 then
+	dbms_output.put_line('A+');
+	elsif gpa>8 then
+	dbms_output.put_line('A');
+	elsif gpa>7 then
+	dbms_output.put_line('B');
+	elsif gpa>6 then
+	dbms_output.put_line('C');
+	elsif gpa>5 then
+	dbms_output.put_line('D');
+	elsif gpa>4 then
+	dbms_output.put_line('E');
+	elsif gpa>0 then
+	dbms_output.put_line('F');	
+	else
+	dbms_output.put_line('Wrong Input!');
+	end if;
+end;
+/
+
+5)
+alter table student_table add letterGrade varchar(2);
