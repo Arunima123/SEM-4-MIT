@@ -1,0 +1,64 @@
+1)
+declare
+	cursor c is select * from instructor for update;
+	deptName instructor.dept_name%TYPE;
+begin
+	deptName:=&Department_name;
+	dbms_output.put_line(deptName);	
+	for inst in c
+	loop
+		if(inst.dept_name=deptName) then
+				dbms_output.put_line('Updating salary of ' || inst.name);		
+				update instructor set salary=salary*1.5 where current of c;
+				insert into salary_raise(instructor_id, raise_date, raise_amt) values(inst.id, sysdate, inst.salary);
+		end if;
+	end loop;
+end;
+/
+
+
+2)
+declare 
+	cursor c is select id from student order by tot_cred;
+	ids student.id%TYPE;
+	name student.name%TYPE;
+	dept_name student.dept_name%TYPE;
+	tot_cred student.tot_cred%TYPE;
+begin
+	open c;
+	loop
+		fetch c into ids;
+		exit when c%NOTFOUND;	
+		if(c%ROWCOUNT<11) then
+			select name,dept_name,tot_cred into name,dept_name,tot_cred from student where id = ids;
+			dbms_output.put_line(name || ' ' || dept_name || ' ' || tot_cred || ' ' ||ids);
+		end if;
+	end loop;
+	close c;
+end;
+/
+
+4)
+declare
+	cursor c is select * from student join takes on student.id = takes.id where course_id ='CS-101' for update; 
+begin
+	for student in c
+	loop
+	if(student.tot_cred<30) then
+		dbms_output.put_line('Deleting: ' || student.name);
+		delete from takes where current of c;
+	end if;		
+	end loop;
+end;
+/
+
+6)
+declare 
+	cursor c is select * from course,instructor where instructor.id=course.course_id for update;
+begin
+	for inst in c
+	loop
+		dbms_output.put_line(inst.name);
+	end loop;
+end;
+/
